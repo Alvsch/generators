@@ -35,6 +35,8 @@ public class PlayerEvents implements Listener {
         if(!JsonUtils.exists(plugin.data.get("players").getAsJsonObject(), event.getPlayer().getUniqueId().toString())) {
             JsonObject object = new JsonObject();
             object.addProperty("coins", 0);
+            object.addProperty("gens", 0);
+            object.addProperty("max_gens", 10);
 
             JsonUtils.add(plugin.data.get("players").getAsJsonObject(), event.getPlayer().getUniqueId().toString(), object);
         }
@@ -47,6 +49,15 @@ public class PlayerEvents implements Listener {
         ItemStack item = event.getItemInHand().clone();
         item.setAmount(1);
         if(ItemHandler.gensList.containsValue(item)) {
+            JsonObject player_data = plugin.data.get("players").getAsJsonObject().get(event.getPlayer().getUniqueId().toString()).getAsJsonObject();
+
+            if(player_data.get("max_gens").getAsInt() <= player_data.get("gens").getAsInt()) {
+                event.getPlayer().sendMessage(Utils.color("&cYou cant have that many generators"));
+                event.setCancelled(true);
+                return;
+            }
+            player_data.addProperty("gens", player_data.get("gens").getAsInt() + 1);
+
             Block block = event.getBlock();
             String xyz = block.getLocation().getBlockX() + "-" + block.getLocation().getBlockY() + "-" + block.getLocation().getBlockZ();
 
@@ -144,6 +155,11 @@ public class PlayerEvents implements Listener {
                     return;
                 }
                 plugin.data.get("gens").getAsJsonObject().remove(xyz);
+                JsonObject player_data = plugin.data.get("players").getAsJsonObject().get(event.getPlayer().getUniqueId().toString()).getAsJsonObject();
+                int amount = player_data.get("gens").getAsInt() - 1;
+                if (amount < 0) amount = 0;
+
+                player_data.addProperty("gens", amount);
                 event.getPlayer().getInventory().addItem(ItemHandler.gensList.get(block.getType()));
                 block.setType(Material.AIR);
             }

@@ -2,6 +2,7 @@ package me.alvsch.generators;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import me.alvsch.generators.commands.GenSlotsCommand;
 import me.alvsch.generators.commands.GeneratorsCommand;
 import me.alvsch.generators.commands.economy.CoinsCommand;
 import me.alvsch.generators.commands.economy.SellCommand;
@@ -11,6 +12,7 @@ import me.alvsch.generators.inventory.InventoryHandler;
 import me.alvsch.generators.item.ItemHandler;
 import me.alvsch.generators.runnable.Runnable;
 import me.alvsch.generators.tabcompletion.CoinsTabCompletion;
+import me.alvsch.generators.tabcompletion.GenSlotsTabCompletion;
 import me.alvsch.generators.utils.Utils;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -98,6 +100,9 @@ public final class Main extends JavaPlugin {
         getCommand("coins").setTabCompleter(new CoinsTabCompletion());
 
         getCommand("sell").setExecutor(new SellCommand());
+
+        getCommand("genslots").setExecutor(new GenSlotsCommand());
+        getCommand("genslots").setTabCompleter(new GenSlotsTabCompletion());
 
     }
 
