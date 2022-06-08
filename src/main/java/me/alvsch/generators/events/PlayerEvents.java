@@ -1,17 +1,12 @@
 package me.alvsch.generators.events;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import me.alvsch.generators.Main;
-import me.alvsch.generators.inventory.InventoryHandler;
 import me.alvsch.generators.item.ItemHandler;
 import me.alvsch.generators.utils.JsonUtils;
 import me.alvsch.generators.utils.Utils;
 import net.milkbowl.vault.economy.Economy;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -23,11 +18,13 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.UUID;
+import java.util.Iterator;
+import java.util.Map;
 
 public class PlayerEvents implements Listener {
 
     Main plugin = Main.getPlugin();
+    Economy econ = Main.getEcon();
 
     @EventHandler
     public void playerJoin(PlayerJoinEvent event) {
@@ -44,7 +41,7 @@ public class PlayerEvents implements Listener {
     @EventHandler
     public void blockPlace(BlockPlaceEvent event) {
 
-            if(ItemHandler.gensList.containsKey(event.getBlockPlaced().getType())) {
+            if(ItemHandler.gensList.containsValue(event.getItemInHand())) {
                 Block block = event.getBlock();
                 String xyz = block.getLocation().getBlockX() + "-" + block.getLocation().getBlockY() + "-" + block.getLocation().getBlockZ();
 
@@ -65,26 +62,58 @@ public class PlayerEvents implements Listener {
         Player player = event.getPlayer();
         Inventory inv = player.getInventory();
 
-        if(event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-            if(item == null) {
-                return;
+        if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+
+            if(player.isSneaking()) {
+                String xyz = block.getLocation().getBlockX()
+                        + "-" + block.getLocation().getBlockY()
+                        + "-" + block.getLocation().getBlockZ();
+
+                if(JsonUtils.exists(plugin.data.get("gens").getAsJsonObject(), xyz)) {
+                    int i = ItemHandler.gensListIndex.get(block.getType());
+                    Material next_material;
+                    try {
+                        next_material = (Material) ItemHandler.gensList.keySet().toArray()[i + 1];
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        player.sendMessage(Utils.color("&cThere is no next level!"));
+                        return;
+                    }
+
+                    if(JsonUtils.getProperty(plugin.data.get("gens").getAsJsonObject().get(xyz).getAsJsonObject(),
+                            "uuid").getAsString().equals(player.getUniqueId().toString())) {
+
+                        if(econ.getBalance(player) > 0) {
+                            block.setType(next_material);
+                        } else {
+                            player.sendMessage(Utils.color("&cNot Enough Money!"));
+                        }
+                    }
+
+                }
+
             }
 
-            if(item.getType().equals(Material.PAPER) && item.getItemMeta().getDisplayName().equals("§aMoney Note")) {
-                String amount = item.getItemMeta().getLore().get(0);
-                double int_amount;
-                try {
-                    int_amount = Double.parseDouble(amount.split(": ")[1]);
-                } catch (NumberFormatException e) {
+            if(event.getAction().equals(Action.RIGHT_CLICK_AIR)) {
+                if(item == null) {
                     return;
                 }
-                item.setAmount(item.getAmount() - 1);
-                player.sendMessage(Utils.color("Redeemed " + int_amount + " Coins"));
-                JsonObject player_data = JsonUtils.getProperty(plugin.data.get("players").getAsJsonObject(), player.getUniqueId().toString()).getAsJsonObject();
-                int coins = player_data.get("coins").getAsInt();
 
-                player_data.addProperty("coins", coins + int_amount);
+                if(item.getType().equals(Material.PAPER) && item.getItemMeta().getDisplayName().equals("§aMoney Note")) {
+                    String amount = item.getItemMeta().getLore().get(0);
+                    double int_amount;
+                    try {
+                        int_amount = Double.parseDouble(amount.split(": ")[1]);
+                    } catch (NumberFormatException e) {
+                        return;
+                    }
+                    item.setAmount(item.getAmount() - 1);
+                    player.sendMessage(Utils.color("Redeemed " + int_amount + " Coins"));
+                    JsonObject player_data = JsonUtils.getProperty(plugin.data.get("players").getAsJsonObject(), player.getUniqueId().toString()).getAsJsonObject();
+                    int coins = player_data.get("coins").getAsInt();
 
+                    player_data.addProperty("coins", coins + int_amount);
+
+                }
             }
         }
 
@@ -96,6 +125,7 @@ public class PlayerEvents implements Listener {
             if(JsonUtils.exists(plugin.data.get("gens").getAsJsonObject(), xyz)) {
                 String uuid = JsonUtils.getProperty(plugin.data.get("gens").getAsJsonObject(), xyz).getAsJsonObject().get("uuid").getAsString();
                 if(!uuid.equals(player.getUniqueId().toString())) {
+                    event.setCancelled(true);
                     return;
                 }
                 plugin.data.get("gens").getAsJsonObject().remove(xyz);

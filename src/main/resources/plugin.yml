@@ -15,3 +15,6 @@ commands:
   coins:
     usage: /<command> [help]
     permission-message: §cYou can't execute this command
+
+  sell:
+    usage: /<command>

@@ -7,34 +7,16 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.AbstractList;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class ItemHandler {
 
     public static ItemStack placeholder;
 
-    public static HashMap<Material, ItemStack> gensList = new HashMap<>();
+    public static LinkedHashMap<Material, ItemStack> gensList = new LinkedHashMap<>();
+    public static HashMap<Material, Integer> gensListIndex = new HashMap<>();
 
-    public static ItemStack gen1;
-    public static ItemStack gen2;
-    public static ItemStack gen3;
-    public static ItemStack gen4;
-    public static ItemStack gen5;
-    public static ItemStack gen6;
-    public static ItemStack gen7;
-    public static ItemStack gen8;
-    public static ItemStack gen9;
-    public static ItemStack gen10;
-    public static ItemStack gen11;
-    public static ItemStack gen12;
-    public static ItemStack gen13;
-    public static ItemStack gen14;
-    public static ItemStack gen15;
-    public static ItemStack gen16;
-    public static ItemStack gen17;
+    public static HashMap<ItemStack, ItemStack> genDrop = new HashMap<>();
 
     public static ItemStack collector;
 
@@ -48,23 +30,23 @@ public class ItemHandler {
     }
 
     private static void init_gens() {
-        gen1 = ItemUtils.createItem(Material.HAY_BLOCK, 1, "&6Hay Generator");
-        gen2 = ItemUtils.createItem(Material.WHITE_GLAZED_TERRACOTTA, 1, "&fWhite Generator");
-        gen3 = ItemUtils.createItem(Material.YELLOW_GLAZED_TERRACOTTA, 1, "&eYellow Generator");
-        gen4 = ItemUtils.createItem(Material.LIME_GLAZED_TERRACOTTA, 1, "&aLime Generator");
-        gen5 = ItemUtils.createItem(Material.GREEN_GLAZED_TERRACOTTA, 1, "&2Green Generator");
-        gen6 = ItemUtils.createItem(Material.ORANGE_GLAZED_TERRACOTTA, 1, "&fOrange Generator");
-        gen7 = ItemUtils.createItem(Material.LIGHT_BLUE_GLAZED_TERRACOTTA, 1, "&9Light Blue Generator");
-        gen8 = ItemUtils.createItem(Material.CYAN_GLAZED_TERRACOTTA, 1, "&3Cyan Generator");
-        gen9 = ItemUtils.createItem(Material.BLUE_GLAZED_TERRACOTTA, 1, "&1Blue Generator");
-        gen10 = ItemUtils.createItem(Material.PURPLE_GLAZED_TERRACOTTA, 1, "&5Purple Generator");
-        gen11 = ItemUtils.createItem(Material.MAGENTA_GLAZED_TERRACOTTA, 1, "&dMagenta Generator");
-        gen12 = ItemUtils.createItem(Material.PINK_GLAZED_TERRACOTTA, 1, "&dPink Generator");
-        gen13 = ItemUtils.createItem(Material.RED_GLAZED_TERRACOTTA, 1, "&cRed Generator");
-        gen15 = ItemUtils.createItem(Material.LIGHT_GRAY_GLAZED_TERRACOTTA, 1, "&7Light Gray Generator");
-        gen14 = ItemUtils.createItem(Material.GRAY_GLAZED_TERRACOTTA, 1, "&8Gray Generator");
-        gen16 = ItemUtils.createItem(Material.BLACK_GLAZED_TERRACOTTA, 1, "&0Black Generator");
-        gen17 = ItemUtils.createItem(Material.CRYING_OBSIDIAN, 1, "&0Obsidian Generator");
+        ItemStack gen1 = ItemUtils.createItem(Material.HAY_BLOCK, 1, "&6Hay Generator");
+        ItemStack gen2 = ItemUtils.createItem(Material.WHITE_GLAZED_TERRACOTTA, 1, "&fWhite Generator");
+        ItemStack gen3 = ItemUtils.createItem(Material.YELLOW_GLAZED_TERRACOTTA, 1, "&eYellow Generator");
+        ItemStack gen4 = ItemUtils.createItem(Material.LIME_GLAZED_TERRACOTTA, 1, "&aLime Generator");
+        ItemStack gen5 = ItemUtils.createItem(Material.GREEN_GLAZED_TERRACOTTA, 1, "&2Green Generator");
+        ItemStack gen6 = ItemUtils.createItem(Material.ORANGE_GLAZED_TERRACOTTA, 1, "&fOrange Generator");
+        ItemStack gen7 = ItemUtils.createItem(Material.LIGHT_BLUE_GLAZED_TERRACOTTA, 1, "&9Light Blue Generator");
+        ItemStack gen8 = ItemUtils.createItem(Material.CYAN_GLAZED_TERRACOTTA, 1, "&3Cyan Generator");
+        ItemStack gen9 = ItemUtils.createItem(Material.BLUE_GLAZED_TERRACOTTA, 1, "&1Blue Generator");
+        ItemStack gen10 = ItemUtils.createItem(Material.PURPLE_GLAZED_TERRACOTTA, 1, "&5Purple Generator");
+        ItemStack gen11 = ItemUtils.createItem(Material.MAGENTA_GLAZED_TERRACOTTA, 1, "&dMagenta Generator");
+        ItemStack gen12 = ItemUtils.createItem(Material.PINK_GLAZED_TERRACOTTA, 1, "&dPink Generator");
+        ItemStack gen13 = ItemUtils.createItem(Material.RED_GLAZED_TERRACOTTA, 1, "&cRed Generator");
+        ItemStack gen15 = ItemUtils.createItem(Material.LIGHT_GRAY_GLAZED_TERRACOTTA, 1, "&7Light Gray Generator");
+        ItemStack gen14 = ItemUtils.createItem(Material.GRAY_GLAZED_TERRACOTTA, 1, "&8Gray Generator");
+        ItemStack gen16 = ItemUtils.createItem(Material.BLACK_GLAZED_TERRACOTTA, 1, "&0Black Generator");
+        ItemStack gen17 = ItemUtils.createItem(Material.CRYING_OBSIDIAN, 1, "&0Obsidian Generator");
 
         collector = ItemUtils.createItem(Material.LODESTONE, 1, "&aCollector");
 
@@ -85,6 +67,31 @@ public class ItemHandler {
         gensList.put(gen15.getType(), gen15);
         gensList.put(gen16.getType(), gen16);
         gensList.put(gen17.getType(), gen17);
+
+        genDrop.put(gen1, ItemUtils.createItem(Material.WHEAT, 1, "&6Hay"));
+        genDrop.put(gen2, ItemUtils.createItem(Material.WHEAT, 1, "&6Hay"));
+        genDrop.put(gen3, ItemUtils.createItem(Material.WHEAT, 1, "&6Hay"));
+        genDrop.put(gen4, ItemUtils.createItem(Material.WHEAT, 1, "&6Hay"));
+        genDrop.put(gen5, ItemUtils.createItem(Material.WHEAT, 1, "&6Hay"));
+        genDrop.put(gen6, ItemUtils.createItem(Material.WHEAT, 1, "&6Hay"));
+        genDrop.put(gen7, ItemUtils.createItem(Material.WHEAT, 1, "&6Hay"));
+        genDrop.put(gen8, ItemUtils.createItem(Material.WHEAT, 1, "&6Hay"));
+        genDrop.put(gen9, ItemUtils.createItem(Material.WHEAT, 1, "&6Hay"));
+        genDrop.put(gen10, ItemUtils.createItem(Material.WHEAT, 1, "&6Hay"));
+        genDrop.put(gen11, ItemUtils.createItem(Material.WHEAT, 1, "&6Hay"));
+        genDrop.put(gen12, ItemUtils.createItem(Material.WHEAT, 1, "&6Hay"));
+        genDrop.put(gen13, ItemUtils.createItem(Material.WHEAT, 1, "&6Hay"));
+        genDrop.put(gen14, ItemUtils.createItem(Material.WHEAT, 1, "&6Hay"));
+        genDrop.put(gen15, ItemUtils.createItem(Material.WHEAT, 1, "&6Hay"));
+        genDrop.put(gen16, ItemUtils.createItem(Material.WHEAT, 1, "&6Hay"));
+        genDrop.put(gen17, ItemUtils.createItem(Material.WHEAT, 1, "&6Hay"));
+
+        int i = 0;
+        for(Material material : gensList.keySet()) {
+            gensListIndex.put(material, i);
+            i += 1;
+
+        }
 
 
 

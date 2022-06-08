@@ -15,11 +15,11 @@ public class InventoryHandler {
     public static void init() {
         gensInv = InventoryUtils.createInventory(null, 6, "&cGenerators");
         InventoryUtils.fillRows(ItemHandler.placeholder, gensInv, 1, 9);
-        InventoryUtils.fillRows(ItemHandler.placeholder, gensInv, 44, 54);
+        InventoryUtils.fillRows(ItemHandler.placeholder, gensInv, 46, 54);
 
         InventoryUtils.addItems(ItemHandler.gensList.values(), gensInv);
 
-        gensInv.addItem(ItemHandler.collector);
+        //gensInv.addItem(ItemHandler.collector);
 
     }
 

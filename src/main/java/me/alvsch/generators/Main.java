@@ -4,10 +4,12 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import me.alvsch.generators.commands.GeneratorsCommand;
 import me.alvsch.generators.commands.economy.CoinsCommand;
+import me.alvsch.generators.commands.economy.SellCommand;
 import me.alvsch.generators.events.PlayerEvents;
 import me.alvsch.generators.inventory.InventoryEvents;
 import me.alvsch.generators.inventory.InventoryHandler;
 import me.alvsch.generators.item.ItemHandler;
+import me.alvsch.generators.runnable.Runnable;
 import me.alvsch.generators.tabcompletion.CoinsTabCompletion;
 import me.alvsch.generators.utils.Utils;
 import net.milkbowl.vault.economy.Economy;
@@ -36,6 +38,9 @@ public final class Main extends JavaPlugin {
 
         plugin = this;
 
+        getConfig().options().copyDefaults(true);
+        saveConfig();
+
         try {
             data = loadDataFile();
         } catch (FileNotFoundException e) {
@@ -55,6 +60,8 @@ public final class Main extends JavaPlugin {
 
         registerEvents();
         registerCommands();
+        Runnable runnable = new Runnable();
+        runnable.startGens();
 
     }
 
@@ -89,6 +96,8 @@ public final class Main extends JavaPlugin {
 
         getCommand("coins").setExecutor(new CoinsCommand());
         getCommand("coins").setTabCompleter(new CoinsTabCompletion());
+
+        getCommand("sell").setExecutor(new SellCommand());
 
     }
 
