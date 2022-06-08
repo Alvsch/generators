@@ -41,7 +41,7 @@ public class PlayerEvents implements Listener {
     @EventHandler
     public void blockPlace(BlockPlaceEvent event) {
 
-        ItemStack item = event.getItemInHand();
+        ItemStack item = event.getItemInHand().clone();
         item.setAmount(1);
         if(ItemHandler.gensList.containsValue(item)) {
             Block block = event.getBlock();
