@@ -1,0 +1,17 @@
+name: Generators
+version: '${project.version}'
+main: me.alvsch.generators.Main
+api-version: 1.17
+depend:
+  - Vault
+authors: [ Alvsch1 ]
+commands:
+  generators:
+    usage: /<command>
+    aliases:
+      - gens
+    permission-message: §cYou can't execute this command
+
+  coins:
+    usage: /<command> [help]
+    permission-message: §cYou can't execute this command
