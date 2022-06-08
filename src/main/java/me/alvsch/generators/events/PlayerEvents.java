@@ -41,16 +41,18 @@ public class PlayerEvents implements Listener {
     @EventHandler
     public void blockPlace(BlockPlaceEvent event) {
 
-            if(ItemHandler.gensList.containsValue(event.getItemInHand())) {
-                Block block = event.getBlock();
-                String xyz = block.getLocation().getBlockX() + "-" + block.getLocation().getBlockY() + "-" + block.getLocation().getBlockZ();
+        ItemStack item = event.getItemInHand();
+        item.setAmount(1);
+        if(ItemHandler.gensList.containsValue(item)) {
+            Block block = event.getBlock();
+            String xyz = block.getLocation().getBlockX() + "-" + block.getLocation().getBlockY() + "-" + block.getLocation().getBlockZ();
 
-                JsonObject jsonObject = new JsonObject();
-                jsonObject.addProperty("uuid", event.getPlayer().getUniqueId().toString());
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("uuid", event.getPlayer().getUniqueId().toString());
 
-                plugin.data.get("gens").getAsJsonObject().add(xyz, jsonObject);
-                event.getPlayer().sendMessage(Utils.color("&aSuccessfully Placed Down A Generator"));
-            }
+            plugin.data.get("gens").getAsJsonObject().add(xyz, jsonObject);
+            event.getPlayer().sendMessage(Utils.color("&aSuccessfully Placed Down A Generator"));
+        }
 
     }
 
