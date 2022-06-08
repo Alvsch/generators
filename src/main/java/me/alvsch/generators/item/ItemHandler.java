@@ -50,6 +50,24 @@ public class ItemHandler {
 
         collector = ItemUtils.createItem(Material.LODESTONE, 1, "&aCollector");
 
+        genDrop.put(gen1, ItemUtils.createItem(Material.WHEAT, 1, "&6Hay", "§fSell: 100"));
+        genDrop.put(gen2, ItemUtils.createItem(Material.WHITE_DYE, 1, "&fWhite Material", "§fSell: 200"));
+        genDrop.put(gen3, ItemUtils.createItem(Material.YELLOW_DYE, 1, "&eYellow Material", "§fSell: 400"));
+        genDrop.put(gen4, ItemUtils.createItem(Material.LIME_DYE, 1, "&aLime Material", "§fSell: 800"));
+        genDrop.put(gen5, ItemUtils.createItem(Material.GREEN_DYE, 1, "&2Green Material", "§fSell: 1600"));
+        genDrop.put(gen6, ItemUtils.createItem(Material.ORANGE_DYE, 1, "&fOrange Material", "§fSell: 3200"));
+        genDrop.put(gen7, ItemUtils.createItem(Material.LIGHT_BLUE_DYE, 1, "&9Light Blue Material", "§fSell: 6400"));
+        genDrop.put(gen8, ItemUtils.createItem(Material.CYAN_DYE, 1, "&3Cyan Material", "§fSell: 12_800"));
+        genDrop.put(gen9, ItemUtils.createItem(Material.BLUE_DYE, 1, "&1Blue Material", "§fSell: 12_800"));
+        genDrop.put(gen10, ItemUtils.createItem(Material.PURPLE_DYE, 1, "&5Purple Material", "§fSell: 12_800"));
+        genDrop.put(gen11, ItemUtils.createItem(Material.MAGENTA_DYE, 1, "&dMagenta Material", "§fSell: 25_600"));
+        genDrop.put(gen12, ItemUtils.createItem(Material.PINK_DYE, 1, "&dPink Material", "§fSell: 51_200"));
+        genDrop.put(gen13, ItemUtils.createItem(Material.RED_DYE, 1, "&cRed Material", "§fSell: 102_400"));
+        genDrop.put(gen14, ItemUtils.createItem(Material.LIGHT_GRAY_DYE, 1, "&7Light Gray Material", "§fSell: 204_800"));
+        genDrop.put(gen15, ItemUtils.createItem(Material.GRAY_DYE, 1, "&8Gray Material", "§fSell: 409_600"));
+        genDrop.put(gen16, ItemUtils.createItem(Material.BLACK_DYE, 1, "&0Black Material", "§fSell: 819_200"));
+        genDrop.put(gen17, ItemUtils.createItem(Material.BRICK, 1, "&eLegendary Poop", "§fSell: 100_000_000"));
+
         gensList.put(gen1.getType(), gen1);
         gensList.put(gen2.getType(), gen2);
         gensList.put(gen3.getType(), gen3);
@@ -68,23 +86,6 @@ public class ItemHandler {
         gensList.put(gen16.getType(), gen16);
         gensList.put(gen17.getType(), gen17);
 
-        genDrop.put(gen1, ItemUtils.createItem(Material.WHEAT, 1, "&6Hay"));
-        genDrop.put(gen2, ItemUtils.createItem(Material.WHEAT, 1, "&6Hay"));
-        genDrop.put(gen3, ItemUtils.createItem(Material.WHEAT, 1, "&6Hay"));
-        genDrop.put(gen4, ItemUtils.createItem(Material.WHEAT, 1, "&6Hay"));
-        genDrop.put(gen5, ItemUtils.createItem(Material.WHEAT, 1, "&6Hay"));
-        genDrop.put(gen6, ItemUtils.createItem(Material.WHEAT, 1, "&6Hay"));
-        genDrop.put(gen7, ItemUtils.createItem(Material.WHEAT, 1, "&6Hay"));
-        genDrop.put(gen8, ItemUtils.createItem(Material.WHEAT, 1, "&6Hay"));
-        genDrop.put(gen9, ItemUtils.createItem(Material.WHEAT, 1, "&6Hay"));
-        genDrop.put(gen10, ItemUtils.createItem(Material.WHEAT, 1, "&6Hay"));
-        genDrop.put(gen11, ItemUtils.createItem(Material.WHEAT, 1, "&6Hay"));
-        genDrop.put(gen12, ItemUtils.createItem(Material.WHEAT, 1, "&6Hay"));
-        genDrop.put(gen13, ItemUtils.createItem(Material.WHEAT, 1, "&6Hay"));
-        genDrop.put(gen14, ItemUtils.createItem(Material.WHEAT, 1, "&6Hay"));
-        genDrop.put(gen15, ItemUtils.createItem(Material.WHEAT, 1, "&6Hay"));
-        genDrop.put(gen16, ItemUtils.createItem(Material.WHEAT, 1, "&6Hay"));
-        genDrop.put(gen17, ItemUtils.createItem(Material.WHEAT, 1, "&6Hay"));
 
         int i = 0;
         for(Material material : gensList.keySet()) {

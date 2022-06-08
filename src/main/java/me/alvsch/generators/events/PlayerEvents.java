@@ -18,6 +18,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -25,6 +26,8 @@ public class PlayerEvents implements Listener {
 
     Main plugin = Main.getPlugin();
     Economy econ = Main.getEcon();
+
+    private HashMap<Player, Long> cooldown = new HashMap<>();
 
     @EventHandler
     public void playerJoin(PlayerJoinEvent event) {
@@ -57,25 +60,34 @@ public class PlayerEvents implements Listener {
     }
 
     @EventHandler
-    public void playerInteract(PlayerInteractEvent event){
+    public void playerInteract(PlayerInteractEvent event) {
+
 
         Block block = event.getClickedBlock();
         ItemStack item = event.getItem();
         Player player = event.getPlayer();
-        Inventory inv = player.getInventory();
 
         if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
 
             if(player.isSneaking()) {
+                if(cooldown.containsKey(player)) {
+                    if(cooldown.get(player) > System.currentTimeMillis()) {
+                        cooldown.remove(player);
+                        return;
+                    }
+                }
+
                 String xyz = block.getLocation().getBlockX()
                         + "-" + block.getLocation().getBlockY()
                         + "-" + block.getLocation().getBlockZ();
 
                 if(JsonUtils.exists(plugin.data.get("gens").getAsJsonObject(), xyz)) {
                     int i = ItemHandler.gensListIndex.get(block.getType());
+                    System.out.println(i);
                     Material next_material;
                     try {
                         next_material = (Material) ItemHandler.gensList.keySet().toArray()[i + 1];
+                        System.out.println(next_material);
                     } catch (ArrayIndexOutOfBoundsException e) {
                         player.sendMessage(Utils.color("&cThere is no next level!"));
                         return;
@@ -86,6 +98,7 @@ public class PlayerEvents implements Listener {
 
                         if(econ.getBalance(player) > 0) {
                             block.setType(next_material);
+                            cooldown.put(player, System.currentTimeMillis() + (1*1000));
                         } else {
                             player.sendMessage(Utils.color("&cNot Enough Money!"));
                         }
