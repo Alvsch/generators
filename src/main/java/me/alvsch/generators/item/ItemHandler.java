@@ -2,8 +2,10 @@ package me.alvsch.generators.item;
 
 import me.alvsch.generators.inventory.InventoryUtils;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -12,6 +14,7 @@ import java.util.*;
 public class ItemHandler {
 
     public static ItemStack placeholder;
+    public static ItemStack credits;
 
     public static LinkedHashMap<Material, ItemStack> gensList = new LinkedHashMap<>();
     public static HashMap<Material, Integer> gensListIndex = new HashMap<>();
@@ -24,7 +27,15 @@ public class ItemHandler {
 
     public static void init() {
 
+        //region Initialize Credits
         placeholder = ItemUtils.createItem(Material.RED_STAINED_GLASS_PANE, 1, " ");
+        credits = ItemUtils.createItem(Material.SUNFLOWER, 1, "&eCREDITS", "§eMade By Alvsch1");
+        credits.addUnsafeEnchantment(Enchantment.LUCK, 1);
+        ItemMeta credit_meta = credits.getItemMeta();
+        assert credit_meta != null;
+        credit_meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        credits.setItemMeta(credit_meta);
+        //endregion
 
         init_gens();
 

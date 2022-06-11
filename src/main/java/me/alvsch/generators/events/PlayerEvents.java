@@ -119,7 +119,7 @@ public class PlayerEvents implements Listener {
                                 ":" + block.getLocation().getBlockZ())) {
                     return;
                 }
-                InventoryHandler.viewCollector(player);
+                InventoryHandler.viewCollector(player, 0);
                 return;
             }
 

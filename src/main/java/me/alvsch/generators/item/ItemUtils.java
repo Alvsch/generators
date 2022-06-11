@@ -7,6 +7,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,7 +17,11 @@ public class ItemUtils {
         ItemStack item = new ItemStack(material, amount);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(Utils.color(display_name));
-        meta.setLore(Arrays.asList(lore));
+        List<String> loreList = new ArrayList<>();
+        for(String s : lore) {
+            loreList.add(Utils.color(s));
+        }
+        meta.setLore(loreList);
         item.setItemMeta(meta);
         return item;
 
