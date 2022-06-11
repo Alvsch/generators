@@ -63,7 +63,12 @@ public final class Main extends JavaPlugin {
         registerEvents();
         registerCommands();
         Runnable runnable = new Runnable();
-        runnable.startGens();
+        if(getConfig().getString("mode").equalsIgnoreCase("drop")) {
+            runnable.startGens();
+        }
+        if(getConfig().getString("mode").equalsIgnoreCase("collector")) {
+            runnable.startCollector();
+        }
 
     }
 
@@ -136,6 +141,7 @@ public final class Main extends JavaPlugin {
         if(data.toString().isEmpty()) {
             data.append("{");
             data.append("\"players\": {},");
+            data.append("\"collectors\": {},");
             data.append("\"gens\": {}");
             data.append("}");
         }

@@ -1,1 +1,4 @@
 gen-world: "world"
+
+#DROP or COLLECTOR mode
+mode: "drop"

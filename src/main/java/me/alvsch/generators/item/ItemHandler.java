@@ -17,6 +17,7 @@ public class ItemHandler {
     public static HashMap<Material, Integer> gensListIndex = new HashMap<>();
 
     public static HashMap<ItemStack, ItemStack> genDrop = new HashMap<>();
+    public static HashMap<Material, ItemStack> genDropList = new HashMap<>();
 
     public static ItemStack collector;
 
@@ -86,7 +87,9 @@ public class ItemHandler {
         gensList.put(gen16.getType(), gen16);
         gensList.put(gen17.getType(), gen17);
 
-
+        for(ItemStack item : genDrop.values()) {
+            genDropList.put(item.getType(), item);
+        }
         int i = 0;
         for(Material material : gensList.keySet()) {
             gensListIndex.put(material, i);
