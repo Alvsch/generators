@@ -1,7 +1,6 @@
 package me.alvsch.generators.commands.economy;
 
 import me.alvsch.generators.Main;
-import me.alvsch.generators.inventory.InventoryHandler;
 import me.alvsch.generators.item.ItemHandler;
 import me.alvsch.generators.utils.Utils;
 import net.milkbowl.vault.economy.Economy;

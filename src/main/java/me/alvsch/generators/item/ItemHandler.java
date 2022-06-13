@@ -1,10 +1,8 @@
 package me.alvsch.generators.item;
 
-import me.alvsch.generators.inventory.InventoryUtils;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -17,9 +15,10 @@ public class ItemHandler {
     public static ItemStack credits;
 
     public static LinkedHashMap<Material, ItemStack> gensList = new LinkedHashMap<>();
+    public static HashMap<ItemStack, Integer> gensPrices = new HashMap<>();
     public static HashMap<Material, Integer> gensListIndex = new HashMap<>();
 
-    public static HashMap<ItemStack, ItemStack> genDrop = new HashMap<>();
+    public static LinkedHashMap<ItemStack, ItemStack> genDrop = new LinkedHashMap<>();
     public static HashMap<Material, ItemStack> genDropList = new HashMap<>();
 
     public static ItemStack collector;
@@ -62,23 +61,23 @@ public class ItemHandler {
 
         collector = ItemUtils.createItem(Material.LODESTONE, 1, "&aCollector");
 
-        genDrop.put(gen1, ItemUtils.createItem(Material.WHEAT, 1, "&6Hay", "§fSell: 100"));
-        genDrop.put(gen2, ItemUtils.createItem(Material.WHITE_DYE, 1, "&fWhite Material", "§fSell: 200"));
-        genDrop.put(gen3, ItemUtils.createItem(Material.YELLOW_DYE, 1, "&eYellow Material", "§fSell: 400"));
-        genDrop.put(gen4, ItemUtils.createItem(Material.LIME_DYE, 1, "&aLime Material", "§fSell: 800"));
-        genDrop.put(gen5, ItemUtils.createItem(Material.GREEN_DYE, 1, "&2Green Material", "§fSell: 1600"));
-        genDrop.put(gen6, ItemUtils.createItem(Material.ORANGE_DYE, 1, "&fOrange Material", "§fSell: 3200"));
-        genDrop.put(gen7, ItemUtils.createItem(Material.LIGHT_BLUE_DYE, 1, "&9Light Blue Material", "§fSell: 6400"));
-        genDrop.put(gen8, ItemUtils.createItem(Material.CYAN_DYE, 1, "&3Cyan Material", "§fSell: 12_800"));
-        genDrop.put(gen9, ItemUtils.createItem(Material.BLUE_DYE, 1, "&1Blue Material", "§fSell: 12_800"));
-        genDrop.put(gen10, ItemUtils.createItem(Material.PURPLE_DYE, 1, "&5Purple Material", "§fSell: 12_800"));
-        genDrop.put(gen11, ItemUtils.createItem(Material.MAGENTA_DYE, 1, "&dMagenta Material", "§fSell: 25_600"));
-        genDrop.put(gen12, ItemUtils.createItem(Material.PINK_DYE, 1, "&dPink Material", "§fSell: 51_200"));
-        genDrop.put(gen13, ItemUtils.createItem(Material.RED_DYE, 1, "&cRed Material", "§fSell: 102_400"));
-        genDrop.put(gen14, ItemUtils.createItem(Material.LIGHT_GRAY_DYE, 1, "&7Light Gray Material", "§fSell: 204_800"));
-        genDrop.put(gen15, ItemUtils.createItem(Material.GRAY_DYE, 1, "&8Gray Material", "§fSell: 409_600"));
-        genDrop.put(gen16, ItemUtils.createItem(Material.BLACK_DYE, 1, "&0Black Material", "§fSell: 819_200"));
-        genDrop.put(gen17, ItemUtils.createItem(Material.BRICK, 1, "&eLegendary Poop", "§fSell: 100_000_000"));
+        genDrop.put(gen1, ItemUtils.createItem(Material.WHEAT, 1, "&6Hay", "§fSell: 2"));
+        genDrop.put(gen2, ItemUtils.createItem(Material.WHITE_DYE, 1, "&fWhite Material", "§fSell: 4"));
+        genDrop.put(gen3, ItemUtils.createItem(Material.YELLOW_DYE, 1, "&eYellow Material", "§fSell: 6"));
+        genDrop.put(gen4, ItemUtils.createItem(Material.LIME_DYE, 1, "&aLime Material", "§fSell: 10"));
+        genDrop.put(gen5, ItemUtils.createItem(Material.GREEN_DYE, 1, "&2Green Material", "§fSell: 15"));
+        genDrop.put(gen6, ItemUtils.createItem(Material.ORANGE_DYE, 1, "&fOrange Material", "§fSell: 25"));
+        genDrop.put(gen7, ItemUtils.createItem(Material.LIGHT_BLUE_DYE, 1, "&9Light Blue Material", "§fSell: 40"));
+        genDrop.put(gen8, ItemUtils.createItem(Material.CYAN_DYE, 1, "&3Cyan Material", "§fSell: 80"));
+        genDrop.put(gen9, ItemUtils.createItem(Material.BLUE_DYE, 1, "&1Blue Material", "§fSell: 160"));
+        genDrop.put(gen10, ItemUtils.createItem(Material.PURPLE_DYE, 1, "&5Purple Material", "§fSell: 320"));
+        genDrop.put(gen11, ItemUtils.createItem(Material.MAGENTA_DYE, 1, "&dMagenta Material", "§fSell: 780"));
+        genDrop.put(gen12, ItemUtils.createItem(Material.PINK_DYE, 1, "&dPink Material", "§fSell: 1560"));
+        genDrop.put(gen13, ItemUtils.createItem(Material.RED_DYE, 1, "&cRed Material", "§fSell: 3125"));
+        genDrop.put(gen14, ItemUtils.createItem(Material.LIGHT_GRAY_DYE, 1, "&7Light Gray Material", "§fSell: 6250"));
+        genDrop.put(gen15, ItemUtils.createItem(Material.GRAY_DYE, 1, "&8Gray Material", "§fSell: 12500"));
+        genDrop.put(gen16, ItemUtils.createItem(Material.BLACK_DYE, 1, "&0Black Material", "§fSell: 25000"));
+        genDrop.put(gen17, ItemUtils.createItem(Material.BLACK_CONCRETE, 1, "&4Dark Matter", "§fSell: 50000"));
 
         gensList.put(gen1.getType(), gen1);
         gensList.put(gen2.getType(), gen2);
@@ -98,6 +97,11 @@ public class ItemHandler {
         gensList.put(gen16.getType(), gen16);
         gensList.put(gen17.getType(), gen17);
 
+        int[] prices = {2500,6100,12200,24405,48825,97625,195250,390500,781000,
+                        1562500,3125000,6250000,12500000,25000000,50000000,100000000, 0};
+        for(int i = 0; i < gensList.size(); i++) {
+            gensPrices.put((ItemStack) gensList.values().toArray()[i], prices[i]);
+        }
         for(ItemStack item : genDrop.values()) {
             genDropList.put(item.getType(), item);
         }

@@ -1,6 +1,5 @@
 package me.alvsch.generators.events;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import me.alvsch.generators.Main;
 import me.alvsch.generators.inventory.InventoryHandler;
@@ -31,6 +30,7 @@ public class PlayerEvents implements Listener {
 
     @EventHandler
     public void playerJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
 
         if(!JsonUtils.exists(plugin.data.get("players").getAsJsonObject(), event.getPlayer().getUniqueId().toString())) {
             JsonObject player_data = new JsonObject();
@@ -119,7 +119,11 @@ public class PlayerEvents implements Listener {
                                 ":" + block.getLocation().getBlockZ())) {
                     return;
                 }
-                InventoryHandler.viewCollector(player, 0);
+                Inventory inv = null;
+                inv = InventoryHandler.viewCollector(player, inv);
+
+                player.closeInventory();
+                player.openInventory(inv);
                 return;
             }
 
@@ -137,7 +141,6 @@ public class PlayerEvents implements Listener {
 
                 if(JsonUtils.exists(plugin.data.get("gens").getAsJsonObject(), xyz)) {
                     int i = ItemHandler.gensListIndex.get(block.getType());
-                    System.out.println(i);
                     Material next_material;
                     try {
                         next_material = (Material) ItemHandler.gensList.keySet().toArray()[i + 1];
@@ -150,11 +153,14 @@ public class PlayerEvents implements Listener {
                     if(JsonUtils.getProperty(plugin.data.get("gens").getAsJsonObject().get(xyz).getAsJsonObject(),
                             "uuid").getAsString().equals(player.getUniqueId().toString())) {
 
-                        if(econ.getBalance(player) > 0) {
+                        int price = ItemHandler.gensPrices.get(ItemHandler.gensList.get(block.getType()));
+
+                        if(econ.getBalance(player) >= price) {
                             block.setType(next_material);
+                            econ.withdrawPlayer(player, price);
                             cooldown.put(player, System.currentTimeMillis() + (1*1000));
                         } else {
-                            player.sendMessage(Utils.color("&cNot Enough Money!"));
+                            player.sendMessage(Utils.color("&cYou need $" + price + " to upgrade this generator"));
                         }
                     }
 
@@ -162,26 +168,26 @@ public class PlayerEvents implements Listener {
 
             }
 
-            if(event.getAction().equals(Action.RIGHT_CLICK_AIR)) {
-                if(item == null) {
+        }
+        if(event.getAction().equals(Action.RIGHT_CLICK_AIR)) {
+            if(item == null) {
+                return;
+            }
+
+            if(item.getType().equals(Material.PAPER) && item.getItemMeta().getDisplayName().equals("§aMoney Note")) {
+                String amount = item.getItemMeta().getLore().get(0);
+                double int_amount;
+                try {
+                    int_amount = Double.parseDouble(amount.split(": ")[1]);
+                } catch (NumberFormatException e) {
                     return;
                 }
+                item.setAmount(item.getAmount() - 1);
+                player.sendMessage(Utils.color("Redeemed " + int_amount + " Coins"));
+                int coins = player_data.get("coins").getAsInt();
 
-                if(item.getType().equals(Material.PAPER) && item.getItemMeta().getDisplayName().equals("§aMoney Note")) {
-                    String amount = item.getItemMeta().getLore().get(0);
-                    double int_amount;
-                    try {
-                        int_amount = Double.parseDouble(amount.split(": ")[1]);
-                    } catch (NumberFormatException e) {
-                        return;
-                    }
-                    item.setAmount(item.getAmount() - 1);
-                    player.sendMessage(Utils.color("Redeemed " + int_amount + " Coins"));
-                    int coins = player_data.get("coins").getAsInt();
+                player_data.addProperty("coins", coins + int_amount);
 
-                    player_data.addProperty("coins", coins + int_amount);
-
-                }
             }
         }
 

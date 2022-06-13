@@ -20,9 +20,9 @@ commands:
     usage: /<command>
 
   genslots:
+    usage: /<command> <type> <player> <amount>
     aliases:
       - generatorslots
 
     permission: generators.admin
     permission-message: §cYou can't execute this command
-    usage: /<command> <type> <player> <amount>
