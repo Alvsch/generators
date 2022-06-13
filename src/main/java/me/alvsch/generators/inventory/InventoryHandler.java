@@ -8,9 +8,11 @@ import me.alvsch.generators.item.ItemHandler;
 import me.alvsch.generators.item.ItemUtils;
 import me.alvsch.generators.utils.Utils;
 import org.bukkit.Material;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,17 +55,19 @@ public class InventoryHandler {
 
         JsonObject player_data = plugin.data.get("players").getAsJsonObject().get(player.getUniqueId().toString()).getAsJsonObject();
 
-        List<ItemStack> items = new ArrayList<>();
         for(Map.Entry<String, JsonElement> elem : player_data.getAsJsonObject("collector").entrySet()) {
-            Material type = Material.getMaterial(elem.getValue().getAsString());
-            items.add(ItemHandler.genDropList.get(type));
-        }
+            Material type = Material.getMaterial(elem.getKey());
+            ItemStack i = ItemHandler.genDropList.get(type);
+            ItemMeta meta = i.getItemMeta();
 
-        int amount = 36;
-        if (items.size() / 36 < page) {
-            return;
-        }
-        for(ItemStack i : items.subList(amount*page, Math.min(items.size(), amount*page+amount))) {
+            List<String> lore = new ArrayList<>();
+            lore.add("&fAmount: " + elem.getValue().getAsString());
+            lore.add("&fLeft Click Sell x1");
+            lore.add("&fRight Click Sell x64");
+            lore.add("&fShift Click Sell All");
+            meta.setLore(lore);
+            i.setItemMeta(meta);
+
             inv.addItem(i);
         }
 

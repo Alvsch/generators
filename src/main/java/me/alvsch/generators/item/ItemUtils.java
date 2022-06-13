@@ -39,6 +39,11 @@ public class ItemUtils {
 
         return item;
     }
+    public static void setLore(ItemStack item, int line, String newLore) {
+        ItemMeta meta = item.getItemMeta();
+        List<String> lore = meta.getLore();
+        lore.set(line, Utils.color(newLore));
+    }
 
 
 

@@ -196,6 +196,7 @@ public class PlayerEvents implements Listener {
 
                 if(Objects.equals(object.get("uuid").getAsString(), player.getUniqueId().toString())) {
                     player_data.addProperty("has_collector", false);
+                    plugin.data.get("collectors").getAsJsonObject().remove(xyz);
                     event.getPlayer().getInventory().addItem(ItemHandler.collector);
                     block.setType(Material.AIR);
 

@@ -12,6 +12,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import javax.print.DocFlavor;
+
 public class InventoryEvents implements Listener {
 
     Main plugin = Main.getPlugin();
@@ -49,6 +51,23 @@ public class InventoryEvents implements Listener {
                     InventoryHandler.viewCollector(player, page - 1);
 
                 }
+                return;
+            }
+
+            if(ItemHandler.genDropList.containsKey(item.getType())) {
+                int amount;
+                if(event.isLeftClick()) {
+                    amount = 1;
+                }
+                if(event.isRightClick()) {
+                    amount = 64;
+                }
+                if(event.isShiftClick()) {
+
+
+                    return;
+                }
+
                 return;
             }
 
